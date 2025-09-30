@@ -161,6 +161,7 @@
                 <li>Кликните в любом месте экрана для запуска конфетти в этой точке</li>
                 <li>Нажмите пробел для запуска конфетти из центра</li>
                 <li>Используйте кнопки управления для разных эффектов</li>
+                <li>Или введите <code>confetti();</code> в консоли</li>
             </ul>
         </div>
     </div>
@@ -317,6 +318,20 @@
             const multipleBurstsButton = document.getElementById('multiple-bursts');
             const stopConfettiButton = document.getElementById('stop-confetti');
 
+            // Функция множественного запуска
+            function multipleBursts() {
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        const x = Math.random() * window.innerWidth;
+                        const y = Math.random() * window.innerHeight;
+                        confetti.launch(x, y);
+                    }, i * 300);
+                }
+            }
+
+            // Делаем доступным глобально
+            window.confetti = multipleBursts;
+
             // Автоматический запуск при загрузке
             setTimeout(() => {
                 confetti.launchFromCenter();
@@ -351,15 +366,7 @@
             });
 
             // Множественные запуски
-            multipleBurstsButton.addEventListener('click', function() {
-                for (let i = 0; i < 5; i++) {
-                    setTimeout(() => {
-                        const x = Math.random() * window.innerWidth;
-                        const y = Math.random() * window.innerHeight;
-                        confetti.launch(x, y);
-                    }, i * 300);
-                }
-            });
+            multipleBurstsButton.addEventListener('click', multipleBursts);
 
             // Остановка конфетти
             stopConfettiButton.addEventListener('click', function() {
@@ -376,37 +383,6 @@
             // Экспорт для глобального использования
             window.confettiEffect = confetti;
         });
-
-        // Дополнительные утилиты
-        const ConfettiUtils = {
-            // Быстрый запуск конфетти
-            burst: function(x, y) {
-                const canvas = document.querySelector('.doodle-with-refresh__confetti-canvas');
-                if (!window.confettiEffect) {
-                    window.confettiEffect = new ConfettiEffect(canvas);
-                }
-                window.confettiEffect.launch(x, y);
-            },
-            
-            // Запуск из центра
-            celebrate: function() {
-                const canvas = document.querySelector('.doodle-with-refresh__confetti-canvas');
-                if (!window.confettiEffect) {
-                    window.confettiEffect = new ConfettiEffect(canvas);
-                }
-                window.confettiEffect.launchFromCenter();
-            },
-            
-            // Остановка анимации
-            stop: function() {
-                if (window.confettiEffect) {
-                    window.confettiEffect.stop();
-                }
-            }
-        };
-
-        // Экспорт утилит
-        window.ConfettiUtils = ConfettiUtils;
     </script>
 </body>
 </html>
